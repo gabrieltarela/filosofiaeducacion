@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concepto de Filosofía de la Educación — Quintana Cabanas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F7F3;
+    --bg-panel: #FFFFFF;
+    --ink: #2B3A3A;
+    --ink-soft: #5B6B69;
+    --line: #DDE3DC;
+
+    --hue-1: #7FA6B8;   /* dusty blue   - naturaleza y enfoques */
+    --hue-1-tint: #E7EEF1;
+    --hue-2: #9AB08A;   /* sage green   - ubicacion epistemologica */
+    --hue-2-tint: #EAF0E5;
+    --hue-3: #B79ACB;   /* soft lavender- pedagogia */
+    --hue-3-tint: #F0E9F4;
+    --hue-4: #CBA36C;   /* warm sand    - preguntas */
+    --hue-4-tint: #F5EEE0;
+    --hue-5: #C68B8B;   /* dusty rose   - sintesis/referencias */
+    --hue-5-tint: #F5E9E9;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{
+    max-width:820px;
+    margin:0 auto;
+    padding:64px 28px 100px;
+  }
+
+  header.hero{
+    margin-bottom:48px;
+  }
+
+  .kicker{
+    font-size:0.95rem;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:2.5rem;
+    line-height:1.15;
+    margin:0 0 14px;
+    color:var(--ink);
+    letter-spacing:-0.01em;
+  }
+
+  .byline{
+    font-size:1.02rem;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:60ch;
+  }
+
+  .byline strong{
+    color:var(--ink);
+    font-weight:600;
+  }
+
+  /* Instructions panel */
+  .howto{
+    background: var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+    margin:0 0 40px;
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+  }
+
+  .howto-icon{
+    flex:0 0 auto;
+    width:40px;
+    height:40px;
+    border-radius:10px;
+    background:linear-gradient(135deg, var(--hue-1-tint), var(--hue-3-tint));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .howto-icon svg{width:20px;height:20px;}
+
+  .howto-text p{
+    margin:0;
+    font-size:0.98rem;
+    color:var(--ink-soft);
+  }
+
+  .howto-text p + p{margin-top:6px;}
+
+  .howto-text .lead{
+    color:var(--ink);
+    font-weight:600;
+    font-family:'Fraunces', serif;
+    font-size:1.05rem;
+    margin-bottom:4px;
+  }
+
+  kbd.click-demo{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--hue-1-tint);
+    color:var(--ink);
+    border-radius:20px;
+    padding:2px 10px;
+    font-size:0.88rem;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600;
+    border:1px solid rgba(0,0,0,0.06);
+  }
+
+  /* Tree controls */
+  .tree-toolbar{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-bottom:16px;
+  }
+
+  .toolbar-btn{
+    font-family:'Source Sans 3', sans-serif;
+    font-size:0.85rem;
+    font-weight:600;
+    color:var(--ink-soft);
+    background:transparent;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:6px 14px;
+    cursor:pointer;
+    transition:background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .toolbar-btn:hover{
+    background:var(--bg-panel);
+    color:var(--ink);
+    border-color:var(--ink-soft);
+  }
+
+  /* Tree structure */
+  .tree{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .node{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+  }
+
+  .node > .node-row{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:16px 18px;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  .node > .node-row:focus-visible{
+    outline:2px solid var(--ink-soft);
+    outline-offset:-2px;
+  }
+
+  .twisty{
+    flex:0 0 auto;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:2px;
+    transition:transform 0.25s ease, background 0.2s ease;
+    background:var(--tint, var(--hue-1-tint));
+  }
+
+  .twisty svg{
+    width:12px;
+    height:12px;
+    transition:transform 0.25s ease;
+  }
+
+  .node.open > .node-row .twisty svg{
+    transform:rotate(90deg);
+  }
+
+  .node-heading{
+    flex:1;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.08rem;
+    color:var(--ink);
+  }
+
+  .node-heading .sub{
+    display:block;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:400;
+    font-size:0.86rem;
+    color:var(--ink-soft);
+    margin-top:3px;
+  }
+
+  .node-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 0.35s ease;
+  }
+
+  .node.open > .node-body{
+    max-height:3000px;
+  }
+
+  .node-body-inner{
+    padding:0 18px 18px 58px;
+  }
+
+  .node-body-inner p{
+    margin:0 0 12px;
+    color:var(--ink-soft);
+    font-size:0.98rem;
+  }
+
+  .node-body-inner p:last-child{margin-bottom:0;}
+
+  .node-body-inner .quote{
+    font-style:italic;
+    color:var(--ink);
+  }
+
+  /* Nested tree */
+  .children{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:4px;
+  }
+
+  .children .node{
+    background:transparent;
+    border:1px solid var(--line);
+  }
+
+  .children .node .node-row{
+    padding:12px 16px;
+  }
+
+  .children .node .node-heading{
+    font-size:1rem;
+  }
+
+  .children .node .node-body-inner{
+    padding:0 16px 16px 48px;
+  }
+
+  .children .children .node .node-row{
+    padding:10px 14px;
+  }
+
+  .children .children .node-heading{
+    font-size:0.96rem;
+    font-family:'Source Sans 3', sans-serif;
+    font-weight:600;
+  }
+
+  .leaf-list{
+    margin:0;
+    padding-left:18px;
+    color:var(--ink-soft);
+  }
+
+  .leaf-list li{margin-bottom:8px;}
+  .leaf-list li:last-child{margin-bottom:0;}
+  .leaf-list strong{color:var(--ink);}
+
+  /* Color accents per top-level node */
+  .node[data-accent="1"]{ --tint: var(--hue-1-tint); border-left:4px solid var(--hue-1); }
+  .node[data-accent="2"]{ --tint: var(--hue-2-tint); border-left:4px solid var(--hue-2); }
+  .node[data-accent="3"]{ --tint: var(--hue-3-tint); border-left:4px solid var(--hue-3); }
+  .node[data-accent="4"]{ --tint: var(--hue-4-tint); border-left:4px solid var(--hue-4); }
+  .node[data-accent="5"]{ --tint: var(--hue-5-tint); border-left:4px solid var(--hue-5); }
+
+  .twisty svg path{ stroke: var(--ink); }
+
+  footer{
+    margin-top:56px;
+    padding-top:22px;
+    border-top:1px solid var(--line);
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+
+  @media (max-width:560px){
+    h1{font-size:2rem;}
+    .wrap{padding:44px 18px 80px;}
+    .node-body-inner{padding-left:44px;}
+    .children .node .node-body-inner{padding-left:36px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .node-body, .twisty, .twisty svg{transition:none;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="kicker">Actividad 5 · Análisis epistemológico</p>
+    <h1>Concepto de Filosofía de la Educación</h1>
+    <p class="byline">Un recorrido por el artículo de <strong>Josep Ma. Quintana Cabanas</strong> (1982), publicado en la <em>Revista Española de Pedagogía</em>, vol. 40, núm. 157, pp. 109–122.</p>
+  </header>
+
+  <div class="howto">
+    <div class="howto-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="howto-text">
+      <p class="lead">Este contenido está organizado como un árbol plegado</p>
+      <p>Cada tema empieza cerrado, mostrando solo su título. Hacé <kbd class="click-demo">clic</kbd> sobre cualquier fila para desplegar sus subtemas y el texto completo; volvé a hacer clic para plegarla.</p>
+      <p>Los temas contienen subtemas anidados: podés abrir varios niveles a la vez para ir de lo general a lo específico.</p>
+    </div>
+  </div>
+
+  <div class="tree-toolbar">
+    <button class="toolbar-btn" id="expandAll" type="button">Expandir todo</button>
+    <button class="toolbar-btn" id="collapseAll" type="button">Contraer todo</button>
+  </div>
+
+  <div class="tree" id="tree">
+
+    <!-- ============ 1. Esquema conceptual ============ -->
+    <div class="node" data-accent="1">
+      <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+        <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="node-heading">Esquema conceptual / mapa mental
+          <span class="sub">La Filosofía de la Educación en J. Ma. Quintana Cabanas — estructura general del artículo</span>
+        </span>
+      </div>
+      <div class="node-body">
+        <div class="node-body-inner">
+          <p>El artículo se organiza alrededor de tres grandes bloques: la naturaleza plural de la disciplina, su ubicación dentro del mapa general de la filosofía, y su relación con la Pedagogía. Desplegá cada bloque para ver el detalle.</p>
+
+          <div class="children">
+
+            <div class="node" data-accent="1">
+              <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+                <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="node-heading">1. Naturaleza y multiplicidad de enfoques <span class="sub">p. 110</span></span>
+              </div>
+              <div class="node-body">
+                <div class="node-body-inner">
+                  <p><strong>Saber problemático:</strong> la Filosofía de la Educación carece de una definición unívoca, de un método acordado y de un alcance delimitado.</p>
+                  <p><strong>Pluralidad de corrientes:</strong> <span class="quote">"No hay una sola Filosofía de la Educación sino muchas."</span></p>
+                  <p><strong>Perspectivas filosóficas:</strong></p>
+                  <ul class="leaf-list">
+                    <li><strong>Racionalismo</strong> — le otorga una base metafísica.</li>
+                    <li><strong>Neopositivismo</strong> — la reduce al análisis de cuestiones del lenguaje.</li>
+                    <li><strong>Idealismo</strong> — concibe al hombre como espíritu libre y creativo.</li>
+                    <li><strong>Empirismo</strong> — lo entiende como un ser abocado a superar condiciones concretas.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="node" data-accent="2">
+              <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+                <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="node-heading">2. Ubicación epistemológica: filosofía aplicada</span>
+              </div>
+              <div class="node-body">
+                <div class="node-body-inner">
+                  <p><strong>Clasificación en el cuadro de la filosofía:</strong></p>
+                  <ul class="leaf-list">
+                    <li><strong>Filosofía teorética (pura)</strong> — búsqueda desinteresada del conocimiento.</li>
+                    <li><strong>Filosofía aplicada</strong> — carácter "interesado", orientado a resolver problemas prácticos.</li>
+                  </ul>
+                  <p><strong>Sentido de la "aplicación" en la educación:</strong> aprovecha y aplica saberes de la Antropología, la Ética, la Axiología y la Metafísica, respondiendo a preguntas acuciantes como los fines de la educación, la libertad, los valores y la personalidad.</p>
+                  <p><strong>Dimensión de filosofía "especial":</strong> estudia abstractamente el "ser" o la naturaleza de la educación.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="node" data-accent="3">
+              <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+                <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="node-heading">3. Relación con la Pedagogía y la Teoría de la Educación</span>
+              </div>
+              <div class="node-body">
+                <div class="node-body-inner">
+                  <p><strong>Puntos en común:</strong> ambas aclaran la naturaleza del proceso educativo, sus fines y sus bases antropológicas. La Pedagogía se entiende como <span class="quote">"Filosofía puesta en práctica"</span> (Dilthey).</p>
+                  <p><strong>Aporte clave del pragmatismo de John Dewey:</strong> concibe la Filosofía de la Educación como una "Teoría general de la educación", para superar la mera especulación e integrar la problemática ideológica a la praxis educativa.</p>
+                  <p><strong>Diferencias sustanciales:</strong></p>
+                  <ul class="leaf-list">
+                    <li><strong>Filosofía de la Educación</strong> — utiliza presupuestos metafísicos para <em>fundamentar</em> la acción educativa.</li>
+                    <li><strong>Pedagogía / Teoría de la Educación</strong> — analiza aspectos existenciales y fenomenológicos para <em>explicar</em> la realidad educativa.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 2. Desarrollo de las preguntas ============ -->
+    <div class="node" data-accent="4">
+      <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+        <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="node-heading">Desarrollo de las preguntas de la consigna
+          <span class="sub">Tres preguntas guía, respondidas en profundidad</span>
+        </span>
+      </div>
+      <div class="node-body">
+        <div class="node-body-inner">
+          <div class="children">
+
+            <div class="node" data-accent="4">
+              <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+                <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="node-heading">a. ¿En qué sentido habla de una filosofía "aplicada"?</span>
+              </div>
+              <div class="node-body">
+                <div class="node-body-inner">
+                  <p>Quintana Cabanas clasifica a la Filosofía de la Educación como una filosofía aplicada porque no busca la creación desinteresada de saberes teóricos o "puros", sino que posee un carácter "interesado" destinado a resolver dificultades prácticas de la vida y de la praxis educativa.</p>
+                  <p>En lugar de estructurar una modalidad de reflexión totalmente distinta, esta disciplina utiliza y aprovecha los conocimientos elaborados por ramas teóricas como la Antropología, la Ética, la Axiología, la Metafísica y la Estética.</p>
+                  <p>De este modo, aplica dichos saberes para dar respuesta a preguntas concretas y acuciantes del acto educativo, tales como la determinación de los fines de la educación, el concepto de libertad, el modelo de personalidad perfecta y la fundamentación de los valores.</p>
+                  <p>Aunque el autor reconoce que tiene una dimensión de filosofía "especial" cuando examina ontológicamente el "ser" de la educación, destaca que su mayor riqueza temática y utilidad pedagógica residen en su condición de filosofía aplicada.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="node" data-accent="4">
+              <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+                <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="node-heading">b. Puntos en común y diferencias con la Pedagogía (con Dewey)</span>
+              </div>
+              <div class="node-body">
+                <div class="node-body-inner">
+                  <p><strong>Puntos en común:</strong> la Filosofía de la Educación y la Pedagogía (o Teoría de la Educación) comparten la tarea de explicar la naturaleza del proceso educativo, sus bases antropológicas y la determinación de sus fines orientadores. Quintana rescata aquí la visión de Wilhelm Dilthey, para quien la Pedagogía es la "Filosofía puesta en práctica" y la floración última de todo especular filosófico.</p>
+                  <p>Asimismo, resulta central la reflexión de John Dewey, quien desde el pragmatismo concibió la Filosofía de la Educación como una "teoría general de la educación". Dewey planteó esta postura para evitar la especulación filosófica aislada y conectar directamente la reflexión ideológica con la praxis educativa, demostrando que la problemática ideológica es inseparable de la teoría y la práctica pedagógicas.</p>
+                  <p><strong>Diferencias:</strong> a pesar de este parentesco insoslayable, Quintana establece que la Filosofía de la Educación trabaja con presupuestos metafísicos (como la comunicabilidad del saber y la perfectibilidad humana) con el objetivo principal de fundamentar filosóficamente la actividad educativa. Por su parte, la Pedagogía / Teoría de la Educación aborda aspectos más existenciales, inmediatos y fenomenológicos (como la relación educador–educando y los condicionamientos psicológicos, sociológicos o cibernéticos) para explicar cómo opera la realidad educativa concreta.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="node" data-accent="4">
+              <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+                <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                <span class="node-heading">c. ¿Por qué "no hay una sola Filosofía de la Educación"? <span class="sub">p. 110</span></span>
+              </div>
+              <div class="node-body">
+                <div class="node-body-inner">
+                  <p>En la página 110 del artículo, Quintana sostiene que <span class="quote">"no hay una sola Filosofía de la Educación sino muchas"</span> debido a que la filosofía es, por su propia naturaleza, un saber problemático.</p>
+                  <p>Al estar ligada a la ciencia filosófica general, la Filosofía de la Educación carece de una definición unívoca de su concepto, de un método único acordado o de un establecimiento definitivo sobre el alcance de sus logros.</p>
+                  <p>Debido a esta condición, cada corriente filosófica edifica una concepción educativa propia en función de sus presupuestos ideológicos: el racionalismo le brinda una fundamentación metafísica; el neopositivismo la reduce al análisis del lenguaje; el idealismo parte de la visión del hombre como un espíritu libre y creativo; y el empirismo lo concibe como un ser abocado a superar condiciones concretas de vida.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 3. Síntesis ============ -->
+    <div class="node" data-accent="5">
+      <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+        <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="node-heading">Párrafo de síntesis y justificación de criterios</span>
+      </div>
+      <div class="node-body">
+        <div class="node-body-inner">
+          <p>El esquema jerárquico sistematiza la propuesta de Quintana Cabanas articulando la ubicación de la Filosofía de la Educación como filosofía aplicada, su distinción conceptual frente a la Pedagogía y la justificación de su pluralidad teórica.</p>
+          <p>Se destacaron los aportes de Wilhelm Dilthey sobre la pedagogía como filosofía en acción y la reflexión pragmatista de John Dewey, quien la definió como una teoría general de la educación para vincular la ideología con la práctica.</p>
+          <p>Metodológicamente, se organizó el contenido en nodos interconectados para visibilizar cómo los saberes éticos y antropológicos fundamentan las decisiones educativas concretas.</p>
+          <p>La síntesis demuestra que la fundamentación metafísica y la explicación fenomenológica son dimensiones complementarias para orientar el acto educativo.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 4. Referencias ============ -->
+    <div class="node" data-accent="2">
+      <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+        <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="node-heading">Referencias bibliográficas</span>
+      </div>
+      <div class="node-body">
+        <div class="node-body-inner">
+          <ul class="leaf-list">
+            <li><strong>Video:</strong> ¿Qué es la filosofía de la educación? Corrientes filosóficas explicadas — youtube.com/watch?v=XQLljGyFSIU</li>
+            <li><strong>Quintana Cabanas, J. M. (1982).</strong> Concepto de Filosofía de la Educación. <em>Revista Española de Pedagogía</em>, 40(157), 109–122.</li>
+            <li><strong>Dewey, J. (1916).</strong> <em>Democracy and Education: An Introduction to the Philosophy of Education.</em> Macmillan. (Citado y discutido en Quintana Cabanas, 1982, p. 114).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 5. Herramientas de IA ============ -->
+    <div class="node" data-accent="3">
+      <div class="node-row" tabindex="0" role="button" aria-expanded="false">
+        <span class="twisty"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#2B3A3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="node-heading">Herramientas de inteligencia artificial utilizadas</span>
+      </div>
+      <div class="node-body">
+        <div class="node-body-inner">
+          <ul class="leaf-list">
+            <li>Resumir el PDF completo de Quintana a efectos de encontrar en el documento ideas que puedan aportar a la consigna, más allá de que esta esté dirigida a una subsección en particular.</li>
+            <li>Elaboración de prompts para generadores de código HTML y JavaScript, para realizar la presentación visual del contenido.</li>
+            <li>Herramientas públicas y open source para alojar el contenido de forma pública.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    Actividad 5 · Análisis epistemológico sobre el texto de Josep Ma. Quintana Cabanas.
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var tree = document.getElementById('tree');
+
+    function toggleNode(node, force){
+      var isOpen = node.classList.contains('open');
+      var next = (typeof force === 'boolean') ? force : !isOpen;
+      var row = node.querySelector('.node-row');
+      node.classList.toggle('open', next);
+      if(row) row.setAttribute('aria-expanded', String(next));
+    }
+
+    tree.addEventListener('click', function(e){
+      var row = e.target.closest('.node-row');
+      if(!row) return;
+      var node = row.parentElement;
+      toggleNode(node);
+    });
+
+    tree.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        var row = e.target.closest('.node-row');
+        if(!row) return;
+        e.preventDefault();
+        toggleNode(row.parentElement);
+      }
+    });
+
+    document.getElementById('expandAll').addEventListener('click', function(){
+      tree.querySelectorAll('.node').forEach(function(n){ toggleNode(n, true); });
+    });
+
+    document.getElementById('collapseAll').addEventListener('click', function(){
+      tree.querySelectorAll('.node').forEach(function(n){ toggleNode(n, false); });
+    });
+  })();
+</script>
+
+</body>
+</html>
